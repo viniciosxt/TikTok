@@ -780,7 +780,17 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
                 </p>
             </div>
 
-            <div class="confirmation-fee-description" style="text-align: center; margin-top: 5px; background: #f8f8f8; padding: 10px; border-radius: 8px;">
+            <!-- Botão Copiar Código -->
+            <div class="pix-copy-paste-container" style="margin-top: 20px; width: 100%; max-width: 320px; display: flex; flex-direction: column; align-items: center;">
+              <div style="font-size: 14px; color: #333; margin-bottom: 8px; font-weight: 500;">Pix Copia e Cola</div>
+              <div style="display: flex; width: 100%; gap: 8px;">
+                  <input type="text" value="00020101021226830014BR.GOV.BCB.PIX2561qrcodespix.sejaefi.com.br/v2/615b52b080d842098d79cb4619aa67785204000053039865802BR5905EFISA6008SAOPAULO62070503***6304F532" id="pix-code-input" readonly style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 13px; color: #555; outline: none; background: #f9f9f9;">
+                  <button onclick="copyPixCode()" style="background-color: #FE2C55; color: white; border: none; padding: 0 15px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 14px;">Copiar</button>
+              </div>
+              <div id="copy-feedback" style="font-size: 12px; color: #00c853; margin-top: 5px; opacity: 0; transition: opacity 0.3s;">Código copiado!</div>
+            </div>
+
+            <div class="confirmation-fee-description" style="text-align: center; margin-top: 20px; background: #f8f8f8; padding: 10px; border-radius: 8px;">
               Após o pagamento, seu saldo de <span class="bold">R$ 100,00</span> será liberado automaticamente.
             </div>
           </div>
@@ -944,6 +954,32 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
 
       // Expõe a função globalmente para ser chamada quando o popup abrir
       window.animateCurrencyCounter = animateCurrencyCounter;
+      
+      // Função Pix Copia e Cola
+      function copyPixCode() {
+        var copyText = document.getElementById("pix-code-input");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // Para dispositivos móveis
+        
+        try {
+           // Tenta usar a API Clipboard moderna primeiro
+           if (navigator.clipboard && window.isSecureContext) {
+             navigator.clipboard.writeText(copyText.value).then(showCopyFeedback);
+           } else {
+             // Fallback para execCommand
+             document.execCommand('copy');
+             showCopyFeedback();
+           }
+        } catch (err) {
+           console.error('Falha ao copiar', err);
+        }
+      }
+
+      function showCopyFeedback() {
+        var feedback = document.getElementById("copy-feedback");
+        feedback.style.opacity = "1";
+        setTimeout(function(){ feedback.style.opacity = "0"; }, 2000);
+      }
     </script>
     <script src="scripts/main.js"></script>
 </body></html>
